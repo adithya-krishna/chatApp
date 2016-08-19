@@ -1,0 +1,73 @@
+<md-content layout="row" layout-align="center center" class="chatContainer">
+    <div class="chatBox" flex flex-gt-md="80" layout="row" layout-align="center stretch">
+        <md-card layout="column" flex="grow">
+            <md-toolbar class="md-hue-2">
+                <div class="md-toolbar-tools">
+                    <md-button class="md-icon-button" aria-label="Settings" ng-hide="mdMedia('gt-md')" ng-click="closeSideBar()">
+                        <md-icon md-svg-icon="navigation:ic_menu_24px"></md-icon>
+                    </md-button>
+                    <h2>
+                        <span>Chat App</span>
+                    </h2>
+                </div>
+            </md-toolbar>
+            <div class="fullHeight" layout="row">
+                <div>
+                    <md-sidenav class="md-sidenav-left fullHeight" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')" md-disable-backdrop md-whiteframe="4">
+                        <!--sidenav components go here-->
+                        <md-input-container flex class="md-block sideBarSearch">
+                            <label for="some">Search User</label>
+                            <input type="text" id="some" ng-model="filterUsers" />
+                        </md-input-container>
+                        <md-list flex="grow">
+
+                            <md-list-item class="md-2-line" ng-click="null" ng-repeat="user in available =  (users | filter: filterUsers)">
+                                <md-icon class="md-avatar" md-svg-icon="avatars:{{user.avatar}}"></md-icon>
+                                <div class="md-list-item-text">
+                                    <p>{{user.name}}</p>
+                                </div>
+                            </md-list-item>
+                            <md-list-item>
+                                <div class="md-list-item-text" ng-hide="available.length">
+                                    <p>No Users found!</p>
+                                </div>
+                            </md-list-item>
+
+                        </md-list>
+                    </md-sidenav>
+                </div>
+                <!--textBox and chat area-->
+                <div layout="column" class="fullWidth">
+
+                    <md-card-content flex class="chatBubbleContainer enableOverflow">
+                        <div flex>
+                            <div class="messageWrapper them">
+                                <div class="textWrapper">
+                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto asperiores doloribus ea eaque eveniet obcaecati sit. Beatae, eligendi hic ipsam odio quae repellat ullam voluptatum? Aliquam autem dignissimos quis veniam?
+                                </div>
+                            </div>
+                            <div class="messageWrapper me">
+                                <div class="textWrapper">
+                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto asperiores doloribus ea eaque eveniet obcaecati sit. Beatae, eligendi hic ipsam odio quae repellat ullam voluptatum? Aliquam autem dignissimos quis veniam?
+                                </div>
+                            </div>
+                        </div>
+                    </md-card-content>
+
+                    <md-card-content class="messageBoxContainer">
+                        <form name="messageForm" layout="row" >
+                            <md-input-container flex>
+                                <input type="text" autocomplete="off" autofocus="true" placeholder="Message"/>
+                            </md-input-container>
+                            <md-input-container flex-xs="15" flex-sm="10">
+                                <md-button class="md-icon-button" aria-label="Send Message">
+                                    <md-icon md-svg-icon="content:ic_send_24px"></md-icon>
+                                </md-button>
+                            </md-input-container>
+                        </form>
+                    </md-card-content>
+                </div>
+            </div>
+        </md-card>
+    </div>
+</md-content>

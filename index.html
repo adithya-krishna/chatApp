@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+    <link rel="icon" href="app/favicon.ico">
+    <title>Simple echo chat app</title>
+
+    <link rel="stylesheet" href="bower_components/angular-material/angular-material.min.css">
+    <link rel="stylesheet" href="bower_components/ngprogress/ngProgress.css">
+    <link rel="stylesheet" href="app/style/style.css">
+</head>
+
+<body ng-app="chatApp" ng-controller="AppCtrl">
+<!--[if lt IE 7]>
+<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
+    your browser</a> to improve your experience.</p>
+<![endif]-->
+
+<section>
+    <div ui-view></div>
+</section>
+
+
+<!-- bower:js -->
+<script type="text/javascript" src="/bower_components/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript" src="/bower_components/angular/angular.min.js"></script>
+<script type="text/javascript" src="/bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
+<script type="text/javascript" src="/bower_components/angular-animate/angular-animate.min.js"></script>
+<script type="text/javascript" src="/bower_components/angular-aria/angular-aria.min.js"></script>
+<script type="text/javascript" src="/bower_components/angular-messages/angular-messages.min.js"></script>
+<script type="text/javascript" src="/bower_components/angular-material/angular-material.min.js"></script>
+<script type="text/javascript" src="/bower_components/ngprogress/build/ngprogress.min.js"></script>
+<script type="text/javascript" src="/bower_components/ngstorage/ngStorage.min.js"></script>
+<script type="text/javascript" src="/bower_components/lodash/dist/lodash.min.js"></script>
+<!-- endbower -->
+
+<!--main-->
+<script type="text/javascript" src="/app/script/app.js"></script>
+<!--main end-->
+</body>

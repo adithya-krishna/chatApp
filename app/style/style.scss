@@ -1,0 +1,145 @@
+@import "mixins/colors";
+$baseBlue: #2196f3;
+$white: #ffffff;
+$black: #000000;
+$navHeight: 64px;
+
+* {
+	margin: 0;
+	padding: 0;
+}
+
+body, md-content {
+	height: 100vh;
+}
+
+//helpers
+.fullWidth {
+	width: 100%;
+}
+
+.fullHeight {
+	height: 100%
+}
+
+.removePadding {
+	padding: 0;
+}
+
+.removeMargins {
+	margin: 0;
+}
+
+.removeMarginBottom {
+	margin-bottom: 0;
+}
+
+.paddingLeftAndRight {
+	padding: 0 12px;
+}
+
+//overrides
+md-input-container.md-has-icon {
+	@extend .removePadding;
+}
+
+//content
+.enableOverflow {
+	overflow: auto;
+}
+
+md-input-container.sideBarSearch {
+	@extend .removeMarginBottom;
+	@extend .paddingLeftAndRight;
+	.md-placeholder, label:not(.md-no-float):not(.md-container-ignore) {
+		padding-left: 15px;
+	}
+}
+
+// Round avatar
+md-list-item, md-list-item .md-list-item-inner {
+	& > md-icon:first-child:not(.md-avatar-icon) {
+		height: 38px;
+		width: 38px;
+		margin-right: 24px;
+	}
+	.md-avatar {
+		& > svg {
+			border-radius: 50%;
+		}
+	}
+}
+
+//textbox styles
+.chatContainer {
+	.chatBox {
+		width: 80vw;
+		height: 90vh;
+		min-height: 600px;
+		overflow: auto;
+		.messageBoxContainer{
+			height: 100px;
+		}
+	}
+}
+
+
+.chatBubbleContainer{
+	background-color: color('grey', 'lighten-3');
+	.messageWrapper {
+		position: relative;
+		overflow: hidden;
+		width: 100%;
+		margin: (($navHeight - ($navHeight/1.5)) / 2) 0;
+		padding: (($navHeight - ($navHeight/1.5)) / 2) 0;
+		.textWrapper {
+			padding: ($navHeight - ($navHeight/1.5)) / 2;
+			min-height: $navHeight/1.5;
+			max-width: 60%;
+			margin: 0 ($navHeight - ($navHeight/1.5)) / 2;
+			box-shadow: 0px 1px 0px 0px rgba(50, 50, 50, 0.3);
+			border-radius: 2px;
+			font-weight: 300;
+			position: relative;
+			&:before {
+				content: '';
+				width: 0;
+				height: 0;
+				border-style: solid;
+			}
+		}
+		&.them {
+			.textWrapper {
+				background: $baseBlue;
+				float: left;
+				color: $white;
+			}
+			.textWrapper {
+				&:before {
+					border-width: 0 10px 10px 0;
+					border-color: transparent $baseBlue transparent transparent;
+					position: absolute;
+					top: 0;
+					left: -9px;
+				}
+			}
+		}
+		&.me {
+			.textWrapper {
+				background: $white;
+				float: right;
+				color: $black;
+			}
+			.textWrapper {
+				background: $white;
+				&:before {
+					border-width: 10px 10px 0 0;
+					border-color: $white transparent transparent transparent;
+					position: absolute;
+					top: 0;
+					right: -9px;
+				}
+			}
+		}
+	}
+}
