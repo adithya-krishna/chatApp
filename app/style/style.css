@@ -1639,8 +1639,8 @@ md-list-item .md-avatar > svg, md-list-item .md-list-item-inner .md-avatar > svg
   border-radius: 50%; }
 
 .chatContainer .chatBox {
-  width: 80vw;
-  height: 90vh;
+  width: 80%;
+  height: 90%;
   min-height: 600px;
   overflow: auto; }
   .chatContainer .chatBox .messageBoxContainer {

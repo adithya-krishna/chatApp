@@ -13,14 +13,15 @@
             </md-toolbar>
             <div class="fullHeight" layout="row">
                 <div>
-                    <md-sidenav class="md-sidenav-left fullHeight" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')" md-disable-backdrop md-whiteframe="4">
+                    <md-sidenav class="md-sidenav-left fullHeight" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')" md-whiteframe="2">
                         <!--sidenav components go here-->
-                        <md-input-container flex class="md-block sideBarSearch">
-                            <label for="some">Search User</label>
-                            <input type="text" id="some" ng-model="filterUsers" />
-                        </md-input-container>
-                        <md-list flex="grow">
-
+                        <md-list flex>
+                            <md-list-item>
+                                <md-input-container class="md-block fullWidth removeMarginBottom">
+                                    <label for="some">Search User</label>
+                                    <input type="text" id="some" ng-model="filterUsers" />
+                                </md-input-container>
+                            </md-list-item>
                             <md-list-item class="md-2-line" ng-click="null" ng-repeat="user in available =  (users | filter: filterUsers)">
                                 <md-icon class="md-avatar" md-svg-icon="avatars:{{user.avatar}}"></md-icon>
                                 <div class="md-list-item-text">
@@ -41,20 +42,13 @@
 
                     <md-card-content flex class="chatBubbleContainer enableOverflow">
                         <div flex>
-                            <div class="messageWrapper them">
-                                <div class="textWrapper">
-                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto asperiores doloribus ea eaque eveniet obcaecati sit. Beatae, eligendi hic ipsam odio quae repellat ullam voluptatum? Aliquam autem dignissimos quis veniam?
-                                </div>
-                            </div>
-                            <div class="messageWrapper me">
-                                <div class="textWrapper">
-                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto asperiores doloribus ea eaque eveniet obcaecati sit. Beatae, eligendi hic ipsam odio quae repellat ullam voluptatum? Aliquam autem dignissimos quis veniam?
-                                </div>
+                            <div ng-repeat="item in payload">
+                                <chat-bubble payload="item"></chat-bubble>
                             </div>
                         </div>
                     </md-card-content>
 
-                    <md-card-content class="messageBoxContainer">
+                    <md-card-content flex="20" class="messageBoxContainer">
                         <form name="messageForm" layout="row" >
                             <md-input-container flex>
                                 <input type="text" autocomplete="off" autofocus="true" placeholder="Message"/>

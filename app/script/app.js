@@ -24,9 +24,9 @@ angular.module('chatApp',
         })
         .config(['$mdIconProvider', function($mdIconProvider){
             $mdIconProvider
-                    .iconSet('avatars', 'https://raw.githubusercontent.com/angular/material/master/docs/app/icons/avatar-icons.svg', 24)
-                    .iconSet('navigation', 'https://raw.githubusercontent.com/google/material-design-icons/master/sprites/svg-sprite/svg-sprite-navigation.svg', 24)
-                    .iconSet('content', 'https://raw.githubusercontent.com/google/material-design-icons/master/sprites/svg-sprite/svg-sprite-content.svg', 24);
+                    .iconSet('avatars', 'app/images/icons/avatar-icons.svg', 24)
+                    .iconSet('navigation', 'app/images/icons/svg-sprite-navigation.svg', 24)
+                    .iconSet('content', 'app/images/icons/svg-sprite-content.svg', 24);
         }])
         .run(['$rootScope', '$state', function ($rootScope, $state) {
             $rootScope.$on('$stateChangeStart', function (event, toState) {
@@ -66,6 +66,21 @@ angular.module('chatApp',
                             console.log(retObj, 'done');
                         });
             };
+
+            $scope.payload = [
+                {
+                    id: 0,
+                    text: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto asperiores doloribus ea eaque eveniet obcaecati sit. Beatae, eligendi hic ipsam odio quae repellat ullam voluptatum? Aliquam autem dignissimos quis veniam?",
+                    sentBy: "them",
+                    createdAt: "2016-08-19T17:30:03.730Z"
+                },
+                {
+                    id: 1,
+                    text: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto asperiores doloribus ea eaque eveniet obcaecati sit. Beatae, eligendi hic ipsam odio quae repellat ullam voluptatum? Aliquam autem dignissimos quis veniam?",
+                    sentBy: "me",
+                    createdAt: "2016-08-19T17:30:10.730Z"
+                }
+            ];
 
             $scope.users = [
                 {
