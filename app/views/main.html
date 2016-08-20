@@ -50,7 +50,12 @@
                     <div flex="none" class="messageBoxContainer">
                         <form name="messageForm" layout="row" ng-submit="postMessageToBoard($event)">
                             <md-input-container flex>
-                                <input type="text" ng-model="user.message" autocomplete="off" autofocus="true" placeholder="Message"/>
+                                <input type="text"
+                                       ng-model="user.message"
+                                       name="message"
+                                       autocomplete="off"
+                                       autofocus="true"
+                                       placeholder="Message" />
                             </md-input-container>
                             <md-input-container flex-xs="15" flex-sm="10">
                                 <md-button class="md-icon-button" ng-click="postMessageToBoard($event)" aria-label="Send Message">

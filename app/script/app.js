@@ -12,6 +12,7 @@
 angular.module('chatApp',
         ['ui.router',
             'ngMaterial',
+            'ngMessages',
             'ngProgress.provider',
             'ngStorage'
         ])
@@ -123,6 +124,7 @@ angular.module('chatApp',
 
             $scope.postMessageToBoard = function ($evt) {
                 var selectedUser = $scope.users.filter(function(obj){ return obj.selectedFlag });
+                if( $scope.user.message == "" || (typeof $scope.user.message == 'undefined') ) return false;
 
                 if( selectedUser.length ){
                     $scope.payload.push( {id: payloadID, text: $scope.user.message, sentBy: 'me', createdAt: new Date() } );
