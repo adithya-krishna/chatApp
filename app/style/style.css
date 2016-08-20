@@ -1641,13 +1641,13 @@ md-list-item .md-avatar > svg, md-list-item .md-list-item-inner .md-avatar > svg
 .chatContainer .chatBox {
   width: 80%;
   height: 90%;
-  min-height: 600px;
-  overflow: auto; }
+  overflow: hidden; }
   .chatContainer .chatBox .messageBoxContainer {
-    height: 100px; }
+    padding: 16px; }
 
 .chatBubbleContainer {
-  background-color: #eeeeee; }
+  background-color: #eeeeee;
+  padding: 16px; }
   .chatBubbleContainer .messageWrapper {
     position: relative;
     overflow: hidden;

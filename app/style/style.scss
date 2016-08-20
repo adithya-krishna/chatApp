@@ -75,10 +75,9 @@ md-list-item, md-list-item .md-list-item-inner {
 	.chatBox {
 		width: 80%;
 		height: 90%;
-		min-height: 600px;
-		overflow: auto;
+		overflow: hidden;
 		.messageBoxContainer{
-			height: 100px;
+			padding: 16px;
 		}
 	}
 }
@@ -86,6 +85,7 @@ md-list-item, md-list-item .md-list-item-inner {
 
 .chatBubbleContainer{
 	background-color: color('grey', 'lighten-3');
+	padding: 16px;
 	.messageWrapper {
 		position: relative;
 		overflow: hidden;

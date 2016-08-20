@@ -4,7 +4,7 @@
  * @ngdoc directive
  * @name chatApp.directive: chatBubble
  * @description
- * # leftbar
+ * # chatBubble
  */
 angular.module('chatApp')
     .directive('chatBubble', function () {
@@ -14,10 +14,12 @@ angular.module('chatApp')
                 payload: '='
             },
             template: '<div class="messageWrapper {{payload.sentBy}}">' +
-                '<div class="textWrapper"><p>{{payload.text}}</p></div>' +
+                '<div class="textWrapper">' +
+                    '<p>{{payload.text}}</p>' +
+                    '<small class="timeText">{{payload.createdAt | date:"mediumTime"}}</small>' +
+                '</div>' +
             '</div>',
             link: function (scope, elems, attrs) {
-                console.log(scope.payload);
             }
         }
     });

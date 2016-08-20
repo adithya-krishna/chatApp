@@ -22,10 +22,11 @@
                                     <input type="text" id="some" ng-model="filterUsers" />
                                 </md-input-container>
                             </md-list-item>
-                            <md-list-item class="md-2-line" ng-click="null" ng-repeat="user in available =  (users | filter: filterUsers)">
+                            <md-list-item class="md-2-line" ng-click="selectUser(user)" ng-repeat="user in available =  (users | filter: filterUsers)">
                                 <md-icon class="md-avatar" md-svg-icon="avatars:{{user.avatar}}"></md-icon>
                                 <div class="md-list-item-text">
-                                    <p>{{user.name}}</p>
+                                    <p>{{user.userName}}</p>
+                                    <p>{{user.selectedFlag}}</p>
                                 </div>
                             </md-list-item>
                             <md-list-item>
@@ -40,26 +41,24 @@
                 <!--textBox and chat area-->
                 <div layout="column" class="fullWidth">
 
-                    <md-card-content flex class="chatBubbleContainer enableOverflow">
-                        <div flex>
-                            <div ng-repeat="item in payload">
-                                <chat-bubble payload="item"></chat-bubble>
-                            </div>
+                    <div flex class="chatBubbleContainer enableOverflow">
+                        <div ng-repeat="item in payload">
+                            <chat-bubble payload="item"></chat-bubble>
                         </div>
-                    </md-card-content>
+                    </div>
 
-                    <md-card-content flex="20" class="messageBoxContainer">
-                        <form name="messageForm" layout="row" >
+                    <div flex="none" class="messageBoxContainer">
+                        <form name="messageForm" layout="row" ng-submit="postMessageToBoard($event)">
                             <md-input-container flex>
-                                <input type="text" autocomplete="off" autofocus="true" placeholder="Message"/>
+                                <input type="text" ng-model="user.message" autocomplete="off" autofocus="true" placeholder="Message"/>
                             </md-input-container>
                             <md-input-container flex-xs="15" flex-sm="10">
-                                <md-button class="md-icon-button" aria-label="Send Message">
+                                <md-button class="md-icon-button" ng-click="postMessageToBoard($event)" aria-label="Send Message">
                                     <md-icon md-svg-icon="content:ic_send_24px"></md-icon>
                                 </md-button>
                             </md-input-container>
                         </form>
-                    </md-card-content>
+                    </div>
                 </div>
             </div>
         </md-card>

@@ -55,10 +55,12 @@ angular.module('chatApp',
 
             $rootScope._ = window._;
         }])
-        .controller("AppCtrl", ['$scope', '$rootScope', 'ngProgressFactory', '$mdMedia', '$mdSidenav', function ($scope, $rootScope, ngProgressFactory, $mdMedia, $mdSidenav) {
+        .controller("AppCtrl", ['$scope', '$rootScope', 'ngProgressFactory', '$mdMedia', '$mdDialog', '$mdSidenav', 'socket', function ($scope, $rootScope, ngProgressFactory, $mdMedia, $mdDialog, $mdSidenav, socket) {
             $rootScope.progressbar = ngProgressFactory.createInstance();
             $rootScope.progressbar.setColor('#f1582c');
             $scope.mdMedia = $mdMedia;
+            $scope.user = {};
+            var payloadID = 0;
 
             $scope.closeSideBar = function () {
                 $mdSidenav('left').toggle()
@@ -67,53 +69,83 @@ angular.module('chatApp',
                         });
             };
 
-            $scope.payload = [
-                {
-                    id: 0,
-                    text: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto asperiores doloribus ea eaque eveniet obcaecati sit. Beatae, eligendi hic ipsam odio quae repellat ullam voluptatum? Aliquam autem dignissimos quis veniam?",
-                    sentBy: "them",
-                    createdAt: "2016-08-19T17:30:03.730Z"
-                },
-                {
-                    id: 1,
-                    text: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto asperiores doloribus ea eaque eveniet obcaecati sit. Beatae, eligendi hic ipsam odio quae repellat ullam voluptatum? Aliquam autem dignissimos quis veniam?",
-                    sentBy: "me",
-                    createdAt: "2016-08-19T17:30:10.730Z"
-                }
-            ];
-
             $scope.users = [
                 {
                     id: 0,
-                    name: "Adithya Krishna",
+                    userName: "Adithya Krishna",
+                    selectedFlag: false,
                     avatar: 'svg-1'
                 },
                 {
                     id: 1,
-                    name: "Swetha Ududpa",
+                    userName: "Swetha Ududpa",
+                    selectedFlag: false,
                     avatar: 'svg-2'
                 },
                 {
                     id: 2,
-                    name: "Bhimeshwari",
+                    userName: "Bhimeshwari",
+                    selectedFlag: false,
                     avatar: 'svg-3'
                 },
                 {
                     id: 3,
-                    name: "Basanti Devendra",
+                    userName: "Basanti Devendra",
+                    selectedFlag: false,
                     avatar: 'svg-4'
                 },
                 {
                     id: 4,
-                    name: "Ben Dover",
+                    userName: "Ben Dover",
+                    selectedFlag: false,
                     avatar: 'svg-5'
                 },
                 {
                     id: 5,
-                    name: "P. Ness",
+                    userName: "P. Ness",
+                    selectedFlag: false,
                     avatar: 'svg-6'
                 }
-            ]
+            ];
+
+            $scope.payload = [];
+
+            $scope.resetSelectedFlag = function(){
+                $scope.users.map(function(obj){
+                    return obj.selectedFlag = false;
+                });
+            };
+
+            $scope.selectUser = function(user){
+                $scope.resetSelectedFlag();
+                user.selectedFlag = true;
+            };
+
+            $scope.postMessageToBoard = function ($evt) {
+                var selectedUser = $scope.users.filter(function(obj){ return obj.selectedFlag });
+
+                if( selectedUser.length ){
+                    $scope.payload.push( {id: payloadID, text: $scope.user.message, sentBy: 'me', createdAt: new Date() } );
+                    socket.emit('Send:Message', {id: payloadID, text: $scope.user.message, sentBy: 'me', createdAt: new Date() });
+                    $scope.user = angular.copy({});
+                    payloadID++;
+                }else{
+                    var noUserSelectedAlter = $mdDialog.alert()
+                            .title('No User Selected')
+                            .textContent('Please select a user first')
+                            .ariaLabel('select user')
+                            .targetEvent($evt)
+                            .ok('Ok');
+
+                    $mdDialog.show(noUserSelectedAlter);
+                }
+
+            };
+
+            socket.on('Get:Message', function (retObj) {
+                $scope.payload.push(retObj);
+            })
+
         }])
         .config(['$stateProvider', '$urlRouterProvider', '$locationProvider', function ($stateProvider, $urlRouterProvider, $locationProvider) {
             $locationProvider.html5Mode(false);
