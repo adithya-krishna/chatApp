@@ -36,12 +36,9 @@ io.on('connection', function (socket) {
 
     //Sending message to Specific user
     socket.on('Send:Message', function (payload) {
-        console.log(payload);
         payload.id += 1;
         payload.sentBy = "them";
-        setTimeout(function(){
-            socket.emit('Get:Message', payload);
-        }, 1000);
+        socket.emit('Get:Message', payload);
 
         // socket.broadcast.to(dataServer.id).emit('Get:Message', {
         //     msg: dataServer.msg,
@@ -53,12 +50,12 @@ io.on('connection', function (socket) {
     //Removig user when user left the chatroom
     socket.on('disconnect', function () {
         console.log('a user with id "%s" connected', socket.id);
-        for (var i = 0; i < users.length; i++) {
-            if (users[i].id == socket.id) {
-                users.splice(i, 1); //Removing single user
-            }
-        }
-        io.emit('Exit', users); //sending list of users
+        // for (var i = 0; i < users.length; i++) {
+        //     if (users[i].id == socket.id) {
+        //         users.splice(i, 1); //Removing single user
+        //     }
+        // }
+        // io.emit('Exit', users); //sending list of users
     });
 });
 

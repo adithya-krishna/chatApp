@@ -9,6 +9,20 @@
                     <h2>
                         <span>Chat App</span>
                     </h2>
+                    <span flex></span>
+                    <md-menu md-position-mode="target-right target">
+                        <md-button aria-label="Open interactions menu" class="md-icon-button" ng-click="openOptionsMenu($mdOpenMenu, $event);">
+                            <md-icon md-menu-align-target md-svg-icon="navigation:ic_more_vert_24px"></md-icon>
+                        </md-button>
+                        <md-menu-content width="3">
+                            <md-menu-item>
+                                <md-button ng-click="clearHistory('all', $event)"> Clear all chat history </md-button>
+                            </md-menu-item>
+                            <md-menu-item>
+                                <md-button ng-click="clearHistory('current', $event)"> Clear current chat history </md-button>
+                            </md-menu-item>
+                        </md-menu-content>
+                    </md-menu>
                 </div>
             </md-toolbar>
             <div class="fullHeight" layout="row">
@@ -42,7 +56,7 @@
                 <div layout="column" class="fullWidth">
 
                     <div flex class="chatBubbleContainer enableOverflow">
-                        <div ng-repeat="item in payload">
+                        <div ng-repeat="item in activeMessageDump">
                             <chat-bubble payload="item"></chat-bubble>
                         </div>
                     </div>

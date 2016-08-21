@@ -56,13 +56,70 @@ angular.module('chatApp',
 
             $rootScope._ = window._;
         }])
-        .controller("AppCtrl", ['$scope', '$rootScope', 'ngProgressFactory', '$mdMedia', '$mdDialog', '$mdSidenav', 'socket', function ($scope, $rootScope, ngProgressFactory, $mdMedia, $mdDialog, $mdSidenav, socket) {
+        .controller("AppCtrl", ['$scope', '$rootScope', 'ngProgressFactory', '$mdMedia', '$mdDialog', '$mdSidenav', 'socket', 'sessionService', function ($scope, $rootScope, ngProgressFactory, $mdMedia, $mdDialog, $mdSidenav, socket, sessionService) {
             $rootScope.progressbar = ngProgressFactory.createInstance();
             $rootScope.progressbar.setColor('#f1582c');
             $scope.mdMedia = $mdMedia;
             $scope.user = {};
             var payloadID = 0;
+            var originatorEvent;
+            //initializing from local storage
+            var users = [
+                {
+                    id: 0,
+                    userName: "Adithya Krishna",
+                    selectedFlag: false,
+                    avatar: 'svg-1',
+                    messageDump: []
+                },
+                {
+                    id: 1,
+                    userName: "Swetha Ududpa",
+                    selectedFlag: false,
+                    avatar: 'svg-2',
+                    messageDump: []
+                },
+                {
+                    id: 2,
+                    userName: "Bhimeshwari",
+                    selectedFlag: false,
+                    avatar: 'svg-3',
+                    messageDump: []
+                },
+                {
+                    id: 3,
+                    userName: "Basanti Devendra",
+                    selectedFlag: false,
+                    avatar: 'svg-4',
+                    messageDump: []
+                },
+                {
+                    id: 4,
+                    userName: "Ben Dover",
+                    selectedFlag: false,
+                    avatar: 'svg-5',
+                    messageDump: []
+                },
+                {
+                    id: 5,
+                    userName: "P. Ness",
+                    selectedFlag: false,
+                    avatar: 'svg-6',
+                    messageDump: []
+                }
+            ];
 
+            $scope.initChatHistory = (function (users) {
+                // get users from local storage to check if a previous entry exists
+                $scope.users = angular.copy(sessionService.getUsers()) || [];
+                if( $scope.users.length == 0 ){
+                    // if entry doesn't exist set and get the users
+                    sessionService.setUsers(users);
+                    $scope.users = users;
+                }
+                $scope.activeMessageDump = [];
+            })(users);
+            
             $scope.closeSideBar = function () {
                 $mdSidenav('left').toggle()
                         .then(function (retObj) {
@@ -70,83 +127,74 @@ angular.module('chatApp',
                         });
             };
 
-            $scope.users = [
-                {
-                    id: 0,
-                    userName: "Adithya Krishna",
-                    selectedFlag: false,
-                    avatar: 'svg-1'
-                },
-                {
-                    id: 1,
-                    userName: "Swetha Ududpa",
-                    selectedFlag: false,
-                    avatar: 'svg-2'
-                },
-                {
-                    id: 2,
-                    userName: "Bhimeshwari",
-                    selectedFlag: false,
-                    avatar: 'svg-3'
-                },
-                {
-                    id: 3,
-                    userName: "Basanti Devendra",
-                    selectedFlag: false,
-                    avatar: 'svg-4'
-                },
-                {
-                    id: 4,
-                    userName: "Ben Dover",
-                    selectedFlag: false,
-                    avatar: 'svg-5'
-                },
-                {
-                    id: 5,
-                    userName: "P. Ness",
-                    selectedFlag: false,
-                    avatar: 'svg-6'
-                }
-            ];
-
-            $scope.payload = [];
-
             $scope.resetSelectedFlag = function(){
-                $scope.users.map(function(obj){
-                    return obj.selectedFlag = false;
-                });
+                $scope.users.map(function(obj){ return obj.selectedFlag = false; });
             };
 
             $scope.selectUser = function(user){
                 $scope.resetSelectedFlag();
                 user.selectedFlag = true;
+                $scope.activeMessageDump = user.messageDump;
+            };
+
+            $scope.getSelectedUserIndex = function(){
+                return _.findIndex($scope.users, function (obj) { return obj.selectedFlag });
+            };
+
+            $scope.noUserSelectedAlert = function ($evt) {
+                var noUserSelectedAlter = $mdDialog.alert()
+                        .title('No User Selected')
+                        .textContent('Please select a user first')
+                        .ariaLabel('select user')
+                        .targetEvent($evt)
+                        .ok('Ok');
+
+                $mdDialog.show(noUserSelectedAlter);
             };
 
             $scope.postMessageToBoard = function ($evt) {
-                var selectedUser = $scope.users.filter(function(obj){ return obj.selectedFlag });
                 if( $scope.user.message == "" || (typeof $scope.user.message == 'undefined') ) return false;
+                var selectedUser = $scope.getSelectedUserIndex();
 
-                if( selectedUser.length ){
-                    $scope.payload.push( {id: payloadID, text: $scope.user.message, sentBy: 'me', createdAt: new Date() } );
-                    socket.emit('Send:Message', {id: payloadID, text: $scope.user.message, sentBy: 'me', createdAt: new Date() });
+                if( selectedUser != -1 ){
+                    var postData = {id: payloadID, text: $scope.user.message, sentBy: 'me', createdAt: new Date(), userId: $scope.users[selectedUser].id };
+                    $scope.users[selectedUser].messageDump.push( postData );
+                    socket.emit('Send:Message', postData);
                     $scope.user = angular.copy({});
                     payloadID++;
+                    sessionService.updateUserMessageDump(postData.userId, $scope.users[postData.userId].messageDump);
                 }else{
-                    var noUserSelectedAlter = $mdDialog.alert()
-                            .title('No User Selected')
-                            .textContent('Please select a user first')
-                            .ariaLabel('select user')
-                            .targetEvent($evt)
-                            .ok('Ok');
-
-                    $mdDialog.show(noUserSelectedAlter);
+                    $scope.noUserSelectedAlert($evt);
                 }
 
             };
 
             socket.on('Get:Message', function (retObj) {
-                $scope.payload.push(retObj);
-            })
+                $scope.users[retObj.userId].messageDump.push(retObj);
+                sessionService.updateUserMessageDump(retObj.userId, $scope.users[retObj.userId].messageDump)
+            });
+
+            $scope.openOptionsMenu = function ($mdOpenMenu, event) {
+                originatorEvent = event;
+                $mdOpenMenu(event);
+            };
+
+            $scope.clearHistory = function (mode, $evt) {
+                if( mode === "all" ){
+                    sessionService.destroy();
+                    $scope.activeMessageDump = [];
+                }else{
+                    var userId = $scope.getSelectedUserIndex();
+                    if( userId != -1 ){
+                        sessionService.clearUserMessageDump(userId);
+                        $scope.users[userId].messageDump = [];
+                        $scope.activeMessageDump = [];
+                        console.log($scope.users[userId].messageDump);
+                    }else{
+                        $scope.noUserSelectedAlert($evt);
+                    }
+                }
+            };
 
         }])
         .config(['$stateProvider', '$urlRouterProvider', '$locationProvider', function ($stateProvider, $urlRouterProvider, $locationProvider) {
