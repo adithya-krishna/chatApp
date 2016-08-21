@@ -29,7 +29,7 @@ angular.module('chatApp',
                     .iconSet('navigation', 'app/images/icons/svg-sprite-navigation.svg', 24)
                     .iconSet('content', 'app/images/icons/svg-sprite-content.svg', 24);
         }])
-        .run(['$rootScope', '$state', function ($rootScope, $state) {
+        .run(['$rootScope', '$state', '$window', function ($rootScope, $state, $window) {
             $rootScope.$on('$stateChangeStart', function (event, toState) {
                 $rootScope.progressbar.start();
                 // if authentication is required
@@ -53,6 +53,19 @@ angular.module('chatApp',
                 $rootScope.progressbar.complete();
                 $rootScope.currentState = $state.current.name;
             });
+
+            $rootScope.online = navigator.onLine;
+            $window.addEventListener("offline", function() {
+                $rootScope.$apply(function() {
+                    $rootScope.online = false;
+                });
+            }, false);
+
+            $window.addEventListener("online", function() {
+                $rootScope.$apply(function() {
+                    $rootScope.online = true;
+                });
+            }, false);
 
             $rootScope._ = window._;
         }])
@@ -155,13 +168,13 @@ angular.module('chatApp',
             $scope.postMessageToBoard = function ($evt) {
                 if( $scope.user.message == "" || (typeof $scope.user.message == 'undefined') ) return false;
                 var selectedUser = $scope.getSelectedUserIndex();
-                if( $scope.users[selectedUser].messageDump.length ){
-                    payloadID = $scope.users[selectedUser].messageDump[$scope.users[selectedUser].messageDump.length - 1].id + 1;
-                }else{
-                    payloadID = 0;
-                }
 
                 if( selectedUser != -1 ){
+                    if( $scope.users[selectedUser].messageDump.length ){
+                        payloadID = $scope.users[selectedUser].messageDump[$scope.users[selectedUser].messageDump.length - 1].id + 1;
+                    }else{
+                        payloadID = 0;
+                    }
                     var postData = {id: payloadID, text: $scope.user.message, sentBy: 'me', createdAt: new Date(), userId: $scope.users[selectedUser].id };
                     $scope.users[selectedUser].messageDump.push( postData );
                     socket.emit('Send:Message', postData);

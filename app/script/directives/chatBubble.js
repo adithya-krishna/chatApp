@@ -13,8 +13,8 @@ angular.module('chatApp')
             scope: {
                 payload: '='
             },
-            template: '<div class="messageWrapper {{payload.sentBy}}">' +
-                '<div class="textWrapper animated bounceInUp">' +
+            template: '<div class="messageWrapper {{payload.sentBy}} animated fadeInUp">' +
+                '<div class="textWrapper">' +
                     '<p>{{payload.text}}</p>' +
                     '<small class="timeText">{{payload.createdAt | date:"mediumTime"}}</small>' +
                 '</div>' +
