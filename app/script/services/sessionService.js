@@ -5,7 +5,11 @@
  * @name chatApp.service: sessionService
  * @description
  * # sessionService
- * Service in the chatApp.
+ * # We use the browsers local storage to maintain chat offline.
+ * # localStorage is used in this app for simplicity. In a live app, message dump service which stores encrypted data in files could be used.
+ * # a similar method of storage is used by whatsapp.
+ * # This service contains functions to perform required CRUD operations on the localStorage.
+ *
  */
 
 angular.module('chatApp')

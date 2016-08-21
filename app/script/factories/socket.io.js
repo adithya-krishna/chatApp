@@ -4,7 +4,8 @@
  * @ngdoc directive
  * @name chatApp.factory: socket.io
  * @description
- * # socket.io
+ * # Used for Socket.IO events.
+ * # Although Socket.IO exposes an io variable on the window, it's better to encapsulate it in AngularJS's Dependency Injection system. Read: http://goo.gl/hudViJ
  */
 
 angular.module('chatApp')

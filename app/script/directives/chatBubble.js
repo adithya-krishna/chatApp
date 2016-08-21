@@ -4,7 +4,8 @@
  * @ngdoc directive
  * @name chatApp.directive: chatBubble
  * @description
- * # chatBubble
+ * # chatBubble directive is used in the app to display a user texts.
+ * # Its scope is isolated and a link function can be added to perform actions on every chatBubble directive individually.
  */
 angular.module('chatApp')
     .directive('chatBubble', function () {
@@ -19,7 +20,5 @@ angular.module('chatApp')
                     '<small class="timeText">{{payload.createdAt | date:"mediumTime"}}</small>' +
                 '</div>' +
             '</div>',
-            link: function (scope, elems, attrs) {
-            }
         }
     });
