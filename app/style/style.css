@@ -1,3 +1,4 @@
+/*----------  Imports and variables: these are not required but are in place if necessary  ----------*/
 .materialize-red {
   background-color: #e51c23 !important; }
 
@@ -1607,6 +1608,9 @@
 body, md-content {
   height: 100vh; }
 
+/*=============================================
+=            Helpers and overrides            =
+=============================================*/
 .fullWidth {
   width: 100%; }
 
@@ -1625,6 +1629,10 @@ body, md-content {
 .paddingLeftAndRight, md-input-container.sideBarSearch {
   padding: 0 12px; }
 
+/*=====  End of Helpers and overrides  ======*/
+/*====================================
+=            Main content            =
+====================================*/
 .enableOverflow {
   overflow: auto; }
 
@@ -1694,6 +1702,10 @@ md-list-item.active .md-button {
         top: 0;
         right: -9px; }
 
+/*=====  End of Main content  ======*/
+/*==================================
+=            Animations            =
+==================================*/
 .animated {
   animation-duration: 0.4s;
   animation-fill-mode: both; }
@@ -1710,5 +1722,7 @@ md-list-item.active .md-button {
     transform: none; } }
 .fadeInUp {
   animation-name: fadeInUp; }
+
+/*=====  End of Animations  ======*/
 
 /*# sourceMappingURL=style.css.map */

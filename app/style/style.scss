@@ -1,3 +1,4 @@
+/*----------  Imports and variables: these are not required but are in place if necessary  ----------*/
 @import "mixins/colors";
 $baseBlue: #2196f3;
 $white: #ffffff;
@@ -13,35 +14,43 @@ body, md-content {
 	height: 100vh;
 }
 
-//helpers
-.fullWidth {
-	width: 100%;
-}
+/*=============================================
+=            Helpers and overrides            =
+=============================================*/
+	//helpers
+	.fullWidth {
+		width: 100%;
+	}
 
-.fullHeight {
-	height: 100%
-}
+	.fullHeight {
+		height: 100%
+	}
 
-.removePadding {
-	padding: 0;
-}
+	.removePadding {
+		padding: 0;
+	}
 
-.removeMargins {
-	margin: 0;
-}
+	.removeMargins {
+		margin: 0;
+	}
 
-.removeMarginBottom {
-	margin-bottom: 0;
-}
+	.removeMarginBottom {
+		margin-bottom: 0;
+	}
 
-.paddingLeftAndRight {
-	padding: 0 12px;
-}
+	.paddingLeftAndRight {
+		padding: 0 12px;
+	}
 
-//overrides
-md-input-container.md-has-icon {
-	@extend .removePadding;
-}
+	//overrides
+	md-input-container.md-has-icon {
+		@extend .removePadding;
+	}
+/*=====  End of Helpers and overrides  ======*/
+
+/*====================================
+=            Main content            =
+====================================*/
 
 //content
 .enableOverflow {
@@ -149,6 +158,12 @@ md-list-item.active{
 	}
 }
 
+/*=====  End of Main content  ======*/
+
+/*==================================
+=            Animations            =
+==================================*/
+
 //animations
 .animated {
 	animation-duration: 0.4s;
@@ -174,3 +189,5 @@ md-list-item.active{
 .fadeInUp {
 	animation-name: fadeInUp;
 }
+
+/*=====  End of Animations  ======*/
