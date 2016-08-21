@@ -131,7 +131,7 @@ angular.module('chatApp',
                 if( $scope.users.length == 0 ){
                     /*----------  if list doesn't exist set the users list  ----------*/
                     sessionService.setUsers(users);
-                    $scope.users = users;
+                    $scope.users = angular.copy(users);
                 }
                 /*----------  "activeMessageDump" is the variables that is used to render the list of users messages  ----------*/
                 $scope.activeMessageDump = angular.copy([]);
@@ -176,7 +176,7 @@ angular.module('chatApp',
 
             socket.on('Get:Message', function (retObj) {
                 $scope.users[retObj.userId].messageDump.push(retObj);
-                sessionService.updateUserMessageDump(retObj.userId, $scope.users[retObj.userId].messageDump)
+                sessionService.updateUserMessageDump(retObj.userId, $scope.users[retObj.userId].messageDump);
             });
 
             /**

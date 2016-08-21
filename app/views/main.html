@@ -37,7 +37,7 @@
                                     <input type="text" id="some" ng-model="filterUsers" />
                                 </md-input-container>
                             </md-list-item>
-                            <md-list-item class="md-2-line" ng-click="selectUser(user)" ng-repeat="user in available =  (users | filter: filterUsers)" ng-class="{'active': user.selectedFlag}">
+                            <md-list-item class="md-2-line" ng-click="selectUser(user)" ng-repeat="user in available = (users | filter: filterUsers)" ng-class="{'active': user.selectedFlag}">
                                 <md-icon class="md-avatar" md-svg-icon="avatars:{{user.avatar}}"></md-icon>
                                 <div class="md-list-item-text">
                                     <p>{{user.userName}}</p>
@@ -56,7 +56,7 @@
                 <div layout="column" class="fullWidth">
 
                     <div flex class="chatBubbleContainer enableOverflow">
-                        <div ng-repeat="item in activeMessageDump">
+                        <div ng-repeat="item in activeMessageDump track by $index">
                             <chat-bubble payload="item"></chat-bubble>
                         </div>
                     </div>
