@@ -38,7 +38,9 @@ io.on('connection', function (socket) {
     socket.on('Send:Message', function (payload) {
         payload.id += 1;
         payload.sentBy = "them";
-        socket.emit('Get:Message', payload);
+        setTimeout(function(){
+            socket.emit('Get:Message', payload);
+        }, 500);
 
         // socket.broadcast.to(dataServer.id).emit('Get:Message', {
         //     msg: dataServer.msg,

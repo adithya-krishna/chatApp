@@ -63,53 +63,52 @@ angular.module('chatApp',
             $scope.user = {};
             var payloadID = 0;
             var originatorEvent;
-            //initializing from local storage
-            var users = [
-                {
-                    id: 0,
-                    userName: "Adithya Krishna",
-                    selectedFlag: false,
-                    avatar: 'svg-1',
-                    messageDump: []
-                },
-                {
-                    id: 1,
-                    userName: "Swetha Ududpa",
-                    selectedFlag: false,
-                    avatar: 'svg-2',
-                    messageDump: []
-                },
-                {
-                    id: 2,
-                    userName: "Bhimeshwari",
-                    selectedFlag: false,
-                    avatar: 'svg-3',
-                    messageDump: []
-                },
-                {
-                    id: 3,
-                    userName: "Basanti Devendra",
-                    selectedFlag: false,
-                    avatar: 'svg-4',
-                    messageDump: []
-                },
-                {
-                    id: 4,
-                    userName: "Ben Dover",
-                    selectedFlag: false,
-                    avatar: 'svg-5',
-                    messageDump: []
-                },
-                {
-                    id: 5,
-                    userName: "P. Ness",
-                    selectedFlag: false,
-                    avatar: 'svg-6',
-                    messageDump: []
-                }
-            ];
 
-            $scope.initChatHistory = (function (users) {
+            $scope.initChatHistory = function () {
+                var users = [
+                    {
+                        id: 0,
+                        userName: "Adithya Krishna",
+                        selectedFlag: false,
+                        avatar: 'svg-1',
+                        messageDump: []
+                    },
+                    {
+                        id: 1,
+                        userName: "Swetha Ududpa",
+                        selectedFlag: false,
+                        avatar: 'svg-2',
+                        messageDump: []
+                    },
+                    {
+                        id: 2,
+                        userName: "Bhimeshwari",
+                        selectedFlag: false,
+                        avatar: 'svg-3',
+                        messageDump: []
+                    },
+                    {
+                        id: 3,
+                        userName: "Basanti Devendra",
+                        selectedFlag: false,
+                        avatar: 'svg-4',
+                        messageDump: []
+                    },
+                    {
+                        id: 4,
+                        userName: "Ben Dover",
+                        selectedFlag: false,
+                        avatar: 'svg-5',
+                        messageDump: []
+                    },
+                    {
+                        id: 5,
+                        userName: "P. Ness",
+                        selectedFlag: false,
+                        avatar: 'svg-6',
+                        messageDump: []
+                    }
+                ];
                 // get users from local storage to check if a previous entry exists
                 $scope.users = angular.copy(sessionService.getUsers()) || [];
                 if( $scope.users.length == 0 ){
@@ -117,8 +116,9 @@ angular.module('chatApp',
                     sessionService.setUsers(users);
                     $scope.users = users;
                 }
-                $scope.activeMessageDump = [];
-            })(users);
+                $scope.activeMessageDump = angular.copy([]);
+            };
+            $scope.initChatHistory();
             
             $scope.closeSideBar = function () {
                 $mdSidenav('left').toggle()
@@ -128,7 +128,7 @@ angular.module('chatApp',
             };
 
             $scope.resetSelectedFlag = function(){
-                $scope.users.map(function(obj){ return obj.selectedFlag = false; });
+                _.map($scope.users, function(obj){ return obj.selectedFlag = false; });
             };
 
             $scope.selectUser = function(user){
@@ -155,14 +155,19 @@ angular.module('chatApp',
             $scope.postMessageToBoard = function ($evt) {
                 if( $scope.user.message == "" || (typeof $scope.user.message == 'undefined') ) return false;
                 var selectedUser = $scope.getSelectedUserIndex();
+                if( $scope.users[selectedUser].messageDump.length ){
+                    payloadID = $scope.users[selectedUser].messageDump[$scope.users[selectedUser].messageDump.length - 1].id + 1;
+                }else{
+                    payloadID = 0;
+                }
 
                 if( selectedUser != -1 ){
                     var postData = {id: payloadID, text: $scope.user.message, sentBy: 'me', createdAt: new Date(), userId: $scope.users[selectedUser].id };
                     $scope.users[selectedUser].messageDump.push( postData );
                     socket.emit('Send:Message', postData);
                     $scope.user = angular.copy({});
-                    payloadID++;
                     sessionService.updateUserMessageDump(postData.userId, $scope.users[postData.userId].messageDump);
+                    payloadID++;
                 }else{
                     $scope.noUserSelectedAlert($evt);
                 }
@@ -182,14 +187,13 @@ angular.module('chatApp',
             $scope.clearHistory = function (mode, $evt) {
                 if( mode === "all" ){
                     sessionService.destroy();
-                    $scope.activeMessageDump = [];
+                    $scope.initChatHistory();
                 }else{
                     var userId = $scope.getSelectedUserIndex();
                     if( userId != -1 ){
                         sessionService.clearUserMessageDump(userId);
-                        $scope.users[userId].messageDump = [];
-                        $scope.activeMessageDump = [];
-                        console.log($scope.users[userId].messageDump);
+                        $scope.users[userId].messageDump = angular.copy([]);
+                        $scope.selectUser($scope.users[userId])
                     }else{
                         $scope.noUserSelectedAlert($evt);
                     }

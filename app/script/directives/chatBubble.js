@@ -14,7 +14,7 @@ angular.module('chatApp')
                 payload: '='
             },
             template: '<div class="messageWrapper {{payload.sentBy}}">' +
-                '<div class="textWrapper">' +
+                '<div class="textWrapper animated bounceInUp">' +
                     '<p>{{payload.text}}</p>' +
                     '<small class="timeText">{{payload.createdAt | date:"mediumTime"}}</small>' +
                 '</div>' +
