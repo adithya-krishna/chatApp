@@ -16,6 +16,7 @@ app.get("/", function (req, res) {
 });
 
 
+/*----------  This could be used to send users from the server. the code could also connect to a DB  and get users. We however, do not do this for simplicity.  ----------*/
 // creating array of users.
 var users = [];
 
@@ -30,11 +31,11 @@ var users = [];
 //         return res.send({error: "no user found."})
 // });
 
-// This is auto initiated event when Client connects to Your Machine.
+/*----------  This is auto initiated event when Client connects to Your Machine.  ----------*/
 io.on('connection', function (socket) {
     console.log('a user with id "%s" connected', socket.id);
 
-    //Sending message to Specific user
+    /*----------  code below is used to echo the user's message. code could be modified to echo to a different connection to simulate a true chat app.  ----------*/
     socket.on('Send:Message', function (payload) {
         payload.id += 1;
         payload.sentBy = "them";
@@ -42,22 +43,13 @@ io.on('connection', function (socket) {
             socket.emit('Get:Message', payload);
         }, 500);
 
-        // socket.broadcast.to(dataServer.id).emit('Get:Message', {
-        //     msg: dataServer.msg,
-        //     id: dataServer.id,
-        //     name: dataServer.name
-        // });
+        /*----------  code below could be use to broadcast to a particular connection if needed.  ----------*/
+        // socket.broadcast.to(payload.id).emit('Get:Message', {  });
     });
 
-    //Removig user when user left the chatroom
+    /*----------  logging the exit of a user  ----------*/
     socket.on('disconnect', function () {
         console.log('a user with id "%s" connected', socket.id);
-        // for (var i = 0; i < users.length; i++) {
-        //     if (users[i].id == socket.id) {
-        //         users.splice(i, 1); //Removing single user
-        //     }
-        // }
-        // io.emit('Exit', users); //sending list of users
     });
 });
 
