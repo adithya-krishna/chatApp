@@ -32,6 +32,9 @@ $RECYCLE.BIN/
 .idea/dictionaries
 .idea/vcs.xml
 .idea/jsLibraryMappings.xml
+.idea/chatApp.iml
+.idea/modules.xml
+.idea/watcherTasks.xml
 
 # Sensitive or high-churn files:
 .idea/dataSources.ids
